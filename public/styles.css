@@ -1,0 +1,96 @@
+body {
+	display: flex;
+	flex-direction: column;
+	font-family: "Open Sans";
+	color: #333F48;
+	margin: 0;
+	/*transform: skewX(3deg) rotate(-3deg); /*  <======  DELET THIS */
+}
+
+input, button {
+	font-family: "Open Sans";
+	font-size: 1rem;
+}
+
+button {
+	background: #BF5700;
+	border: none;
+	color: white;
+	padding: 8px;
+}
+
+input {
+	padding: 8px;
+	border: 2px solid #BF5700;
+}
+
+h1,h2 {
+	margin-bottom: 0.25rem;
+	font-weight: bold;
+}
+
+#headerimg {
+	padding-bottom: 2rem;
+	width: 100%;
+}
+
+#container {
+	align-self: center;
+	width: 650px;
+	max-width: 100%;
+	background: white;
+	padding: 1.5rem 3rem;
+	padding-top: 3rem;
+	box-shadow: 0px 8px 32px rgba(0,0,0,0.1);
+	border-radius: 2px;
+	margin-top: 1.5rem;
+}
+
+#equipment {
+	display: flex;
+    flex-direction: column;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 1.5rem;
+}
+
+.row>input, .row>textarea {
+	flex-grow: 1;
+}
+
+#modal {
+	visibility: hidden;
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 100;
+	background: rgba(0,0,0,0.4);
+	border-radius: 2px;
+}
+
+#dialog {
+	background: white;
+	box-shadow: 0px 4px 8px rgba(0,0,0,0.4);
+	text-align: center;
+	padding: 3rem;
+	position: fixed;
+	left: 50%;
+	top: 30%;
+	margin-left: -300px;
+	width: 600px;
+	margin-top: -100px;
+	height: 200px;
+	box-sizing: border-box;
+	font-size: 2rem;
+}
+
+#dialogBtn {
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+}

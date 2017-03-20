@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Input</title>
+	<script src=""
+	<script src="script.js" defer></script>
+	<link href="styles.css" rel="stylesheet" type="text/css"/>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+</head>
+<body>
+	<div id="container">
+		<img src="makerstudioslogo.svg" id="headerimg"/>
+		<h1>Sign in:</h1>
+		<div class="row">
+			<input type="text" id="cardData" placeholder="Swipe card or type EID"/>
+		</div>
+		<h2>Equipment:</h2>
+		<div class="row">
+			<div id="equipment" has-multiple>
+			<label><input type="checkbox" value="laserCutter">  Laser Cutter</label>
+			<label><input type="checkbox" value="3DPrinter">  3D Printer</label>
+			<label><input type="checkbox" value="PCBMill">  PCB Mill</label>
+			<label><input type="checkbox" value="CNCMill">  CNC Mill</label>
+			<label><input type="checkbox" value="plasmaCutter">  Plasma Cutter</label>
+			<label><input type="checkbox" value="solderingIron">  Soldering Iron</label>
+			<label><input type="checkbox" value="sewingMachine">  Sewing Machine</label>
+			<label><input type="checkbox" value="tools">  Tools</label>
+			<label><input type="checkbox" value="other">  Other</label>
+			</div>
+		</div>
+		<h2>Purpose:</h2>
+		<div class="row">
+			<div id="purpose" has-multiple>
+			<label><input name="pu" type="radio" value="fun"> Fun</label>
+			<label><input name="pu" type="radio" value="class"> Class</label>
+			<label><input name="pu" type="radio" value="training"> Training</label>
+			<label><input name="pu" type="radio" value="research"> Research</label>
+			</div>
+		</div>
+		<button id="submitButton">Sign me in</button>
+		<h2 id="textDisplay"></h2>
+	</div>
+
+	<div id="modal">
+		<div id="dialog">
+			<span id="dialogText"></span><br>
+			<button id="dialogBtn">Close</button>
+		</div>
+	</div>
+</body>
+</html>
