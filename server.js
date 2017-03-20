@@ -12,7 +12,6 @@ const FIELDS = ["timestamp", "name", "eid", "major", "classification", "email", 
 const PORT = 1763;
 const NOT_AVAILABLE = "n/a";
 
-// respond with "hello world" when a GET request is made to the homepage
 app.get("/store", function (req, res) {
 	let cardData = atob(req.query.cardData);
 	let equipment = atob(req.query.equipment);
@@ -39,10 +38,12 @@ app.get("/store", function (req, res) {
 				equipment: equipment,
 				purpose: purpose
 			};
+			let escaped = escapeCSVEntry(data);
+
 			if (data.name === NOT_AVAILABLE) {
 				res.send(JSON.stringify({"error": "user does not exist"}));
 			}
-    		else if (write(data)) {
+    		else if (write(escaped)) {
     			res.send(JSON.stringify(data));
     		} else {
     			res.send(JSON.stringify({"error": "could not write file"}));
@@ -56,6 +57,10 @@ require("dns").lookup(require("os").hostname(), function (err, add, fam) {
 	console.log("Running at: \nhttp://"+add+":"+PORT);
 });
 
+/**
+ * Writes an entry to the CSV file.
+ * Creates the CSV file and writes headers if necessary.
+ */
 function write(data) {
 	data.timestamp = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
 	let contents = FIELDS.map(field => data[field]).join(",");
@@ -74,11 +79,18 @@ function write(data) {
 	return true;
 }
 
+/**
+ * Given an entire HTML string from the directory, extracts the value of one field.
+ * Enable cleanup to extract text from an inner tag, e.g. email address in <a> tag.
+ * @param html {String}
+ * @param field {String}
+ * @param cleanup {Boolean}
+ */
 function getInfo(html, field, cleanup) {
 	let match = html.match(new RegExp(field+PATTERN));
 	if (!match || match.length < 2)
 		return NOT_AVAILABLE;
-	let out = match[1];
+	let out = match[1].trim();
 	if (cleanup) {
 		let m = out.match(/>(.*?)</);
 		if (m.length > 1)
@@ -86,10 +98,38 @@ function getInfo(html, field, cleanup) {
 	}
 	return out;
 }
+
+/**
+ * Escapes a single field for CSV format.
+ * Surrounds the field in quotes and escapes quotes. (" -> "" in CSV)
+ */
+function escapeCSVString(str) {
+	return `"${str.replace(/"/g,"\"\"")}"`;
+}
+
+/**
+ * Escapes each field of a CSV entry.
+ * @param obj {Object}
+ */
+function escapeCSVEntry(obj) {
+	let out = {};
+	Object.keys(obj).forEach(key => {
+		out[key] = escapeCSVString(obj[key]);
+	});
+	return out;
+}
+
+/**
+ * Converts string to base64 encoding.
+ */
 function btoa(str) {
 	if (typeof str !== "string" || str.length === 0) return "";
 	return new Buffer(str).toString("base64");
 }
+
+/**
+ * Converts base64-encoded string to ASCII encoding.
+ */
 function atob(str) {
 	if (typeof str !== "string" || str.length === 0) return "";
 	return new Buffer(str, "base64").toString("ascii");
