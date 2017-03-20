@@ -62,7 +62,7 @@ h1,h2 {
 }
 
 #modal {
-	visibility: hidden;
+	display: none;
 	position: fixed;
 	left: 0;
 	top: 0;

@@ -471,3 +471,6 @@ timestamp, name, eid, major, classification, email, equipment, purpose
 3/11/2017 5:27:07 AM,Logan Zartman                      ,lz5735,Computer Science (BSCS),Sophomore                      ,loganzartman@live.com,,
 3/11/2017 5:29:58 AM,Jonathan J Rosenzweig                      ,Jjr3349,Mechanical Engineering,Junior                      ,jrosenzweig@utexas.edu,plasmaCutter,fun
 3/11/2017 12:32:51 PM,LIYAN ZHAO                      ,lz5769,Business Administration (MBA, First Year),Graduate Student                      ,liyan.zhao@mba18.mccombs.utexas.edu,3DPrinter|CNCMill|tools,class
+3/20/2017 5:33:03 PM,Kevin Wu                      ,kw26853,Electrical Engineering,Senior                      ,kevin@kevinywu.com,laserCutter|PCBMill|solderingIron|tools,class
+3/20/2017 5:40:45 PM,Kevin Wu                      ,kw26853,Electrical Engineering,Senior                      ,kevin@kevinywu.com,plasmaCutter|other,fun
+3/20/2017 5:50:29 PM,Kevin Wu                      ,kw26853,Electrical Engineering,Senior                      ,kevin@kevinywu.com,laserCutter|CNCMill,fun

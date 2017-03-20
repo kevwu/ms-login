@@ -2,7 +2,10 @@
 <html>
 <head>
 	<title>Input</title>
-	<script src=""
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous"></script>
 	<script src="script.js" defer></script>
 	<link href="styles.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
@@ -16,7 +19,7 @@
 		</div>
 		<h2>Equipment:</h2>
 		<div class="row">
-			<div id="equipment" has-multiple>
+			<div id="equipment" data-multiple=true>
 			<label><input type="checkbox" value="laserCutter">  Laser Cutter</label>
 			<label><input type="checkbox" value="3DPrinter">  3D Printer</label>
 			<label><input type="checkbox" value="PCBMill">  PCB Mill</label>
@@ -30,7 +33,7 @@
 		</div>
 		<h2>Purpose:</h2>
 		<div class="row">
-			<div id="purpose" has-multiple>
+			<div id="purpose" data-multiple=true>
 			<label><input name="pu" type="radio" value="fun"> Fun</label>
 			<label><input name="pu" type="radio" value="class"> Class</label>
 			<label><input name="pu" type="radio" value="training"> Training</label>

@@ -1,26 +1,11 @@
 const FIELDS = ["cardData", "equipment", "purpose"];
-document.getElementById("submitButton").addEventListener("click", clickHandler, false);
-document.getElementById("cardData").addEventListener("keypress", function(event){
-	if (event.keyCode === 13)
-		clickHandler(event);
-}, false);
 
-document.getElementById("cardData").focus();
-document.getElementById("cardData").addEventListener("blur", function(event){
-	if (this.value === "")
-		this.focus();
-}, false);
-
-document.getElementById("dialogBtn").addEventListener("click", function(event){
-	hideMessage();
-}, false);
-
-function clickHandler(event) {
+$("#submitButton").on("click", function(event) {
 	let data = {};
 	let fail = false;
 	FIELDS.forEach(f => {
 		let e = document.getElementById(f);
-		if (e.hasAttribute("has-multiple")) {
+		if (e.dataset.multiple) {
 			let values = [];
 			e.childNodes.forEach(child => {
 				if (child.tagName !== "LABEL")
@@ -39,14 +24,26 @@ function clickHandler(event) {
 			showMessage("Please complete all fields.", true);
 		}
 	});
-	if (fail)
+	if (fail) {
 		return;
+	}
 	showMessage("Please wait...");
 	post("/store", data, function(data) {
 		let obj = JSON.parse(data);
 		handleLoad(obj);
 	}, true);
-}
+});
+
+$("#cardData").focus();
+$("#cardData").on("blur", function(event){
+	if (this.value === "")
+		this.focus();
+});
+
+$("#dialogBtn").on("click", function(event){
+	$("#modal").hide();
+	$("#dialogBtn").hide();
+});
 
 function handleLoad(data) {
 	if (data.error) {
@@ -60,20 +57,12 @@ function handleLoad(data) {
 	}
 }
 
-function showMessage(text, closeButton) {
-	let modal = document.getElementById("modal");
-	let txt = document.getElementById("dialogText");
-	let btn = document.getElementById("dialogBtn");
-	modal.style.visibility = "visible";
-	btn.style.visibility = closeButton ? "visible" : "hidden";
-	txt.innerText = text;
-}
-
-function hideMessage() {
-	let modal = document.getElementById("modal");
-	let btn = document.getElementById("dialogBtn");
-	modal.style.visibility = "hidden";
-	btn.style.visibility = "hidden";
+function showMessage(text, closeButton=false) {
+	$("#dialogText").text(text);
+	if(closeButton) {
+		$("#dialogBtn").show();
+	}
+	$("#modal").show();
 }
 
 function post(url, data, callback, b64) {
@@ -85,7 +74,7 @@ function post(url, data, callback, b64) {
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 	http.onreadystatechange = function() {//Call a function when the state changes.
-	    if(http.readyState == 4 && http.status == 200) {
+	    if(http.readyState === 4 && http.status === 200) {
 	        callback(http.responseText);
 	    }
 	}
