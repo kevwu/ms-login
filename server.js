@@ -1,16 +1,37 @@
 "use strict";
 let express = require("express");
+let expressBasicAuth = require("basic-auth-connect");
 let http = require("http");
 let fs = require("fs");
 let request = require("request");
 let app = express();
+
+const PORT = 1763;
 const FILENAME = "signin.csv";
+const USE_AUTH = true;
 const URL = "https://directory.utexas.edu/index.php?q={EID}&scope=all&submit=Search";
 const PATTERN = ":[\\s\\S]*?<td>[\\s]+(.+)<";
 const MIN_LENGTH = 42;
 const FIELDS = ["timestamp", "name", "eid", "major", "classification", "email", "equipment", "purpose"];
-const PORT = 1763;
 const NOT_AVAILABLE = "n/a";
+
+//basic authentication
+if (USE_AUTH) {
+	let PASS;
+	try {
+		PASS = fs.readFileSync("password.txt").toString().replace(/[\n\r]*/g,"");
+	}
+	catch (e) {
+		PASS = "password";
+		fs.writeFileSync("password.txt", PASS);
+		console.log("No password.txt found, created one with default password: %s", PASS);
+		console.log("To change password, stop server and modify password.txt.\n");
+	}
+
+	app.use(expressBasicAuth(function(user, pass) {
+		return pass === PASS;
+	}));
+}
 
 app.get("/store", function (req, res) {
 	let cardData = atob(req.query.cardData);
