@@ -20,6 +20,7 @@ button {
 }
 
 input {
+	outline: none;
 	padding: 8px;
 	border: 2px solid #BF5700;
 }
@@ -39,16 +40,39 @@ h1,h2 {
 	width: 650px;
 	max-width: 100%;
 	background: white;
-	padding: 1.5rem 3rem;
-	padding-top: 3rem;
+	padding: 3rem 3rem 1.5rem;
 	box-shadow: 0px 8px 32px rgba(0,0,0,0.1);
 	border-radius: 2px;
 	margin-top: 1.5rem;
 }
 
-#equipment {
-	display: flex;
-    flex-direction: column;
+#equipment, #purpose {
+	display: block;
+	width: 100%;
+}
+
+#equipment label, #purpose label {
+	border: 1px solid #BF5700;
+	color: #000;
+	margin: 10px 0;
+	padding: 8px;
+	border-radius: 5px;
+}
+
+#equipment label {
+	width: 100%;
+	display: block;
+}
+
+#purpose label {
+	width: 20%;
+	text-align: center;
+	display: inline-block;
+}
+
+#equipment label:hover, #purpose label:hover {
+	background-color: #BF5700;
+	color: #fff;
 }
 
 .row {

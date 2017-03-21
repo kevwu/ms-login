@@ -35,10 +35,6 @@ $("#submitButton").on("click", function(event) {
 });
 
 $("#cardData").focus();
-$("#cardData").on("blur", function(event){
-	if (this.value === "")
-		this.focus();
-});
 
 $("#dialogBtn").on("click", function(event){
 	$("#modal").hide();
