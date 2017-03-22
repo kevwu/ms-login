@@ -55,9 +55,10 @@ function handleLoad(data) {
 
 function showMessage(text, closeButton=false) {
 	$("#dialogText").text(text);
-	if(closeButton) {
+	if(closeButton)
 		$("#dialogBtn").show();
-	}
+	else
+		$("#dialogBtn").hide();
 	$("#modal").show();
 }
 
