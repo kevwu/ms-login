@@ -1,10 +1,9 @@
 "use strict";
-let express = require("express");
-let expressBasicAuth = require("basic-auth-connect");
-let http = require("http");
-let fs = require("fs");
-let request = require("request");
-let app = express();
+const express = require("express");
+const expressBasicAuth = require("basic-auth-connect");
+const http = require("http");
+const fs = require("fs");
+const request = require("request");
 
 const PORT = 1763;
 const FILENAME = "signin.csv";
@@ -14,6 +13,8 @@ const PATTERN = ":[\\s\\S]*?<td>[\\s]+(.+)<";
 const MIN_LENGTH = 42;
 const FIELDS = ["timestamp", "name", "eid", "major", "classification", "email", "equipment", "purpose"];
 const NOT_AVAILABLE = "n/a";
+
+let app = express();
 
 //basic authentication
 if (USE_AUTH) {
@@ -33,11 +34,16 @@ if (USE_AUTH) {
 	}));
 }
 
+//serve static login page
+app.use(express.static("public"));
+
+//automatic signin via EID/card
 app.get("/store", function (req, res) {
 	let cardData = atob(req.query.cardData);
 	let equipment = atob(req.query.equipment);
 	let purpose = atob(req.query.purpose);
 
+	//very lazy solution to support card or EID input
 	let eid;
 	if (cardData.length < MIN_LENGTH) {
 		eid = cardData;
@@ -46,37 +52,59 @@ app.get("/store", function (req, res) {
 		eid = cardData.match(/%A(.+) /)[1].toLowerCase();
 	}
 
+	//do directory lookup
 	request({
 		url: URL.replace("{EID}", eid)
 	}, function (error, response, html) {
 		if (!error && response.statusCode === 200) {
-			let data = {
-				name: getInfo(html, "Name"),
+			let data = parseDirectoryData(html, {
 				eid: eid,
-				major: getInfo(html, "Major"),
-				classification: getInfo(html, "Classification"),
-				email: getInfo(html, "Email", true),
 				equipment: equipment,
 				purpose: purpose
-			};
-			let escaped = escapeCSVEntry(data);
+			});
 
+			//generate a response
 			if (data.name === NOT_AVAILABLE) {
 				res.send(JSON.stringify({"error": "user does not exist"}));
 			}
-    		else if (write(escaped)) {
-    			res.send(JSON.stringify(data));
-    		} else {
-    			res.send(JSON.stringify({"error": "could not write file"}));
-    		}
+			else if (write(data)) { //try to write data to the file
+				res.send(JSON.stringify(data));
+			} else {
+				res.send(JSON.stringify({"error": "could not write file"}));
+			}
 	    }
 	});
 });
-app.use(express.static("public"));
+
+//manual signin via data entry
+app.get("/store-manual", function(req, res) {
+	res.send(JSON.stringify({"error": "not yet supported."}));
+});
+
 app.listen(PORT);
+
+//print address to console
 require("dns").lookup(require("os").hostname(), function (err, add, fam) {
 	console.log("Running at: \nhttp://"+add+":"+PORT);
 });
+
+/**
+ * Handles response from directory request.
+ * Parses necessary information and combines it with any existing data.
+ * @param html {String} the directory page as a string
+ * @param data {Object} 
+ * @return augmented data
+ */
+function parseDirectoryData(html, data) {
+	data = Object.assign({
+		name: getInfo(html, "Name"),
+		major: getInfo(html, "Major"),
+		classification: getInfo(html, "Classification"),
+		email: getInfo(html, "Email", true),
+	}, data);
+	let escaped = escapeCSVEntry(data);
+	return escaped;
+}
 
 /**
  * Writes an entry to the CSV file.
