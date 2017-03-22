@@ -23,7 +23,7 @@
 		"email": {
 			"presence": true,
 			"length": true,
-			"email": {"message": "invalid email"}
+			"email": {"message": "invalid email: %{value}"}
 		},
 		"equipment": {
 			"presence": true,

@@ -46,29 +46,14 @@ app.use(express.static("public"));
 
 //automatic signin via EID/card
 app.get("/store", function (req, res) {
-	let cardData = atob(req.query.cardData);
-	let equipment = atob(req.query.equipment);
-	let purpose = atob(req.query.purpose);
-
-	//very lazy solution to support card or EID input
-	let eid;
-	if (cardData.length < MIN_LENGTH) {
-		eid = cardData;
-	}
-	else {
-		eid = cardData.match(/%A(.+) /)[1].toLowerCase();
-	}
+	let data = queryUserInfo(req);
 
 	//do directory lookup
 	request({
-		url: URL.replace("{EID}", eid)
+		url: URL.replace("{EID}", data.eid)
 	}, function (error, response, html) {
 		if (!error && response.statusCode === 200) {
-			let data = parseDirectoryData(html, {
-				eid: eid,
-				equipment: equipment,
-				purpose: purpose
-			});
+			data = parseDirectoryData(html, data);
 
 			//generate a response
 			if (data.name === NOT_AVAILABLE) {
@@ -84,7 +69,10 @@ app.get("/store", function (req, res) {
 
 //manual signin via data entry
 app.get("/store-manual", function(req, res) {
-	res.send(JSON.stringify({"error": "not yet supported."}));
+	let data = Object.assign(queryUserInfo(req), queryUserManualInput(req));
+	console.log(Object.keys(data).map(key => data[key]))
+	res.send(write(data));
+	// res.send(JSON.stringify(Object.assign({"error": "not yet supported."}, data)));
 });
 
 app.listen(PORT);
@@ -93,6 +81,45 @@ app.listen(PORT);
 require("dns").lookup(require("os").hostname(), function (err, add, fam) {
 	console.log("Running at: \nhttp://"+add+":"+PORT);
 });
+
+/**
+ * Retrieves manually-entered user info from query string.
+ * @param req {Object} the express request data
+ * @return an object
+ */
+function queryUserManualInput(req) {
+	return {
+		eid: atob(req.query.eid),
+		name: atob(req.query.name),
+		major: atob(req.query.major),
+		classification: atob(req.query.classification),
+		email: atob(req.query.email)
+	};
+}
+
+/**
+ * Retrieves user info from query string.
+ * @param req {Object} the express request data
+ * @return an object
+ */
+function queryUserInfo(req) {
+	let cardData = atob(req.query.cardData);
+	let equipment = atob(req.query.equipment);
+	let purpose = atob(req.query.purpose);
+
+	//very lazy solution to support card or EID input
+	let eid;
+	if (cardData.length < MIN_LENGTH)
+		eid = cardData;
+	else
+		eid = cardData.match(/%A(.+) /)[1].toLowerCase();
+
+	return {
+		eid: eid,
+		equipment: equipment,
+		purpose: purpose
+	};
+}
 
 /**
  * Handles response from directory request.
@@ -115,6 +142,7 @@ function parseDirectoryData(html, data) {
 /**
  * Writes an entry to the CSV file.
  * Creates the CSV file and writes headers if necessary.
+ * @return response data to send back to the client
  */
 function write(data) {
 	//record timestamp
@@ -123,7 +151,7 @@ function write(data) {
 	//validate and sanitize
 	let result = validate(data, fields.constraints);
 	if (result)
-		return {"error": "data invalid."};
+		return {"error": Object.keys(result).map(key => key + ": " + result[key]).join(",")};
 	let sanitized = escapeCSVEntry(data);
 	
 	let contents = fields.list.map(field => sanitized[field]).join(",");
