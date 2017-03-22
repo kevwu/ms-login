@@ -1,0 +1,45 @@
+{
+	"constraints": {
+		"timestamp": {
+			"presence": true,
+			"length": true
+		},
+		"eid": {
+			"presence": true,
+			"length": true
+		},
+		"name": {
+			"presence": true,
+			"length": true
+		},
+		"major": {
+			"presence": true,
+			"length": true
+		},
+		"classification": {
+			"presence": true,
+			"length": true
+		},
+		"email": {
+			"presence": true,
+			"length": true,
+			"email": {"message": "invalid email"}
+		},
+		"equipment": {
+			"presence": true,
+			"length": true
+		},
+		"purpose": {
+			"presence": true,
+			"length": true
+		}
+	},
+	"defaults": {
+		"presence": {
+			"message": "can't be empty"
+		},
+		"length": {
+			"maximum": 300
+		}
+	}
+}

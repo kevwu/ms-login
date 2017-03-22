@@ -4,6 +4,7 @@ const expressBasicAuth = require("basic-auth-connect");
 const http = require("http");
 const fs = require("fs");
 const request = require("request");
+const validate = require("validate.js");
 
 const PORT = 1763;
 const FILENAME = "signin.csv";
@@ -11,7 +12,6 @@ const USE_AUTH = true;
 const URL = "https://directory.utexas.edu/index.php?q={EID}&scope=all&submit=Search";
 const PATTERN = ":[\\s\\S]*?<td>[\\s]+(.+)<";
 const MIN_LENGTH = 42;
-const FIELDS = ["timestamp", "name", "eid", "major", "classification", "email", "equipment", "purpose"];
 const NOT_AVAILABLE = "n/a";
 
 let app = express();
@@ -33,6 +33,13 @@ if (USE_AUTH) {
 		return pass === PASS;
 	}));
 }
+
+//load field information
+let fields = JSON.parse(fs.readFileSync("fields.json"));
+fields.list = Object.keys(fields.constraints);
+Object.keys(fields.defaults).forEach(validator => {
+	validate.validators[validator].options = fields.defaults[validator];
+})
 
 //serve static login page
 app.use(express.static("public"));
@@ -67,10 +74,9 @@ app.get("/store", function (req, res) {
 			if (data.name === NOT_AVAILABLE) {
 				res.send(JSON.stringify({"error": "user does not exist"}));
 			}
-			else if (write(data)) { //try to write data to the file
-				res.send(JSON.stringify(data));
-			} else {
-				res.send(JSON.stringify({"error": "could not write file"}));
+			else {
+				//try to write data to the file
+				res.send(write(data));
 			}
 	    }
 	});
@@ -102,8 +108,8 @@ function parseDirectoryData(html, data) {
 		classification: getInfo(html, "Classification"),
 		email: getInfo(html, "Email", true),
 	}, data);
-	let escaped = escapeCSVEntry(data);
-	return escaped;
+	
+	return data;
 }
 
 /**
@@ -111,21 +117,35 @@ function parseDirectoryData(html, data) {
  * Creates the CSV file and writes headers if necessary.
  */
 function write(data) {
+	//record timestamp
 	data.timestamp = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
-	let contents = FIELDS.map(field => data[field]).join(",");
+	
+	//validate and sanitize
+	let result = validate(data, fields.constraints);
+	if (result)
+		return {"error": "data invalid."};
+	let sanitized = escapeCSVEntry(data);
+	
+	let contents = fields.list.map(field => sanitized[field]).join(",");
+	
+	//create new file if one does not yet exist
 	try {
 		fs.statSync(FILENAME);
 	} catch (e) {
-		try {fs.writeFileSync(FILENAME, FIELDS.join(",")+"\n");}
-		catch (e2) {return false;}
+		try {fs.writeFileSync(FILENAME, fields.list.join(",")+"\n");}
+		catch (e2) {
+			return {"error": "could not write file."};
+		}
 	}
+	
+	//write file
 	try {
 		fs.appendFileSync(FILENAME, contents+"\n");
 	}
 	catch (e) {
-		return false;
+		return {"error": "could not write file."};
 	}
-	return true;
+	return data;
 }
 
 /**
