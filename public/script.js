@@ -1,8 +1,8 @@
 $("#submitButton").on("click", function(event) {
 	let data = {};
 	let fail = false;
-	Object.keys(formData).forEach(field => {
-		data[field] = vm[field];
+	Object.keys(vm.form).forEach(field => {
+		data[field] = vm.form[field];
 		if (typeof data[field] === "array")
 			data[field] = data[field].join("|");
 
@@ -23,11 +23,6 @@ $("#submitButton").on("click", function(event) {
 
 $("#cardData").focus();
 
-$("#dialogBtn").on("click", function(event){
-	$("#modal").hide();
-	$("#dialogBtn").hide();
-});
-
 function handleLoad(data) {
 	if (data.error) {
 		showMessage("Error: "+data.error, true);
@@ -42,11 +37,8 @@ function handleLoad(data) {
 
 function showMessage(text, closeButton=false) {
 	$("#dialogText").text(text);
-	if(closeButton)
-		$("#dialogBtn").show();
-	else
-		$("#dialogBtn").hide();
-	$("#modal").show();
+	vm.modalCloseBtn = closeButton;
+	vm.modalOpen = true;
 }
 
 function post(url, data, callback, b64) {

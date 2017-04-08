@@ -5,5 +5,8 @@ let formData = {
 };
 let vm = new Vue({
 	el: "#container",
-	data: formData
+	data: {
+		form: formData,
+		modalOpen: false
+	}
 });
