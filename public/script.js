@@ -1,25 +1,12 @@
-const FIELDS = ["cardData", "equipment", "purpose"];
-
 $("#submitButton").on("click", function(event) {
 	let data = {};
 	let fail = false;
-	FIELDS.forEach(f => {
-		let e = document.getElementById(f);
-		if (e.dataset.multiple) {
-			let values = [];
-			e.childNodes.forEach(child => {
-				if (child.tagName !== "LABEL")
-					return;
-				let checkbox = child.childNodes[0];
-				if (checkbox.checked)
-					values.push(checkbox.value);
-			});
-			data[e.id] = values.join("|");
-		}
-		else {
-			data[e.id] = e.value;
-		}
-		if (/^\s*$/.test(data[e.id])) {
+	Object.keys(formData).forEach(field => {
+		data[field] = vm[field];
+		if (typeof data[field] === "array")
+			data[field] = data[field].join("|");
+
+		if (/^\s*$/.test(data[field])) {
 			fail = true;
 			showMessage("Please complete all fields.", true);
 		}

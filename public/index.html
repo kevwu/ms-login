@@ -6,6 +6,8 @@
 		src="https://code.jquery.com/jquery-3.2.1.min.js"
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
+	<script src="vue.js" defer></script>
+	<script src="page.js" defer></script>
 	<script src="script.js" defer></script>
 	<link href="styles.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
@@ -15,29 +17,29 @@
 		<img src="makerstudioslogo.svg" id="headerimg"/>
 		<h1>Sign in:</h1>
 		<div class="row">
-			<input type="text" id="cardData" placeholder="Swipe card or type EID"/>
+			<input type="text" v-model="cardData" placeholder="Swipe card or type EID"/>
 		</div>
 		<h2>Equipment:</h2>
 		<div class="row">
-			<div id="equipment" data-multiple=true>
-			<label><input type="checkbox" value="laserCutter">  Laser Cutter</label>
-			<label><input type="checkbox" value="3DPrinter">  3D Printer</label>
-			<label><input type="checkbox" value="PCBMill">  PCB Mill</label>
-			<label><input type="checkbox" value="CNCMill">  CNC Mill</label>
-			<label><input type="checkbox" value="plasmaCutter">  Plasma Cutter</label>
-			<label><input type="checkbox" value="solderingIron">  Soldering Iron</label>
-			<label><input type="checkbox" value="sewingMachine">  Sewing Machine</label>
-			<label><input type="checkbox" value="tools">  Tools</label>
-			<label><input type="checkbox" value="other">  Other</label>
+			<div class="checkboxes">
+				<label><input type="checkbox" v-model="equipment" value="laserCutter"> Laser Cutter</label>
+				<label><input type="checkbox" v-model="equipment" value="3DPrinter"> 3D Printer</label>
+				<label><input type="checkbox" v-model="equipment" value="PCBMill"> PCB Mill</label>
+				<label><input type="checkbox" v-model="equipment" value="CNCMill"> CNC Mill</label>
+				<label><input type="checkbox" v-model="equipment" value="plasmaCutter"> Plasma Cutter</label>
+				<label><input type="checkbox" v-model="equipment" value="solderingIron"> Soldering Iron</label>
+				<label><input type="checkbox" v-model="equipment" value="sewingMachine"> Sewing Machine</label>
+				<label><input type="checkbox" v-model="equipment" value="tools"> Tools</label>
+				<label><input type="checkbox" v-model="equipment" value="other"> Other</label>
 			</div>
 		</div>
 		<h2>Purpose:</h2>
 		<div class="row">
-			<div id="purpose" data-multiple=true>
-			<label><input name="pu" type="radio" value="fun"> Fun</label>
-			<label><input name="pu" type="radio" value="class"> Class</label>
-			<label><input name="pu" type="radio" value="training"> Training</label>
-			<label><input name="pu" type="radio" value="research"> Research</label>
+			<div class="radios">
+				<label><input name="pu" type="radio" v-model="purpose" value="fun"> Fun</label>
+				<label><input name="pu" type="radio" v-model="purpose" value="class"> Class</label>
+				<label><input name="pu" type="radio" v-model="purpose" value="training"> Training</label>
+				<label><input name="pu" type="radio" v-model="purpose" value="research"> Research</label>
 			</div>
 		</div>
 		<button id="submitButton">Sign me in</button>

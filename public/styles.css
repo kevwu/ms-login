@@ -46,31 +46,32 @@ h1,h2 {
 	margin-top: 1.5rem;
 }
 
-#equipment, #purpose {
+.checkboxes, .radios {
 	display: block;
 	width: 100%;
 }
 
-#equipment label, #purpose label {
+label {
 	border: 1px solid #BF5700;
 	color: #000;
 	margin: 10px 0;
 	padding: 8px;
+	box-sizing: border-box;
 	border-radius: 5px;
 }
 
-#equipment label {
+.checkboxes>label {
 	width: 100%;
 	display: block;
 }
 
-#purpose label {
+.radios>label {
 	width: 20%;
 	text-align: center;
 	display: inline-block;
 }
 
-#equipment label:hover, #purpose label:hover {
+.checkboxes>label:hover, .radios>label:hover {
 	background-color: #BF5700;
 	color: #fff;
 }
