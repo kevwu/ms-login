@@ -89,7 +89,7 @@ require("dns").lookup(require("os").hostname(), function (err, add, fam) {
  */
 function queryUserManualInput(req) {
 	return {
-		eid: atob(req.query.eid),
+		eid: atob(req.query.cardData),
 		name: atob(req.query.name),
 		major: atob(req.query.major),
 		classification: atob(req.query.classification),

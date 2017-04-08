@@ -1,31 +1,18 @@
-$("#submitButton").on("click", function(event) {
-	let data = {};
-	let fail = false;
-	Object.keys(vm.form).forEach(field => {
-		data[field] = vm.form[field];
-		if (typeof data[field] === "array")
-			data[field] = data[field].join("|");
-
-		if (/^\s*$/.test(data[field])) {
-			fail = true;
-			showMessage("Please complete all fields.", true);
-		}
-	});
-	if (fail) {
-		return;
-	}
-	showMessage("Please wait...");
-	post("/store", data, function(data) {
-		let obj = JSON.parse(data);
-		handleLoad(obj);
-	}, true);
-});
-
 $("#cardData").focus();
 
 function handleLoad(data) {
+	vm.manualEntryOpen = false;
 	if (data.error) {
-		showMessage("Error: "+data.error, true);
+		if (data.error.includes("user does not exist")) {
+			showMessage("Error: "+data.error, true, "Manual Entry", function(){
+				vm.manualEntryOpen = true;
+				vm.modalAltBtn = "Submit";
+				vm.modalAltFunc = function(){vm.submit(true)};
+			});
+		}
+		else {
+			showMessage("Error: "+data.error, true);
+		}
 	}
 	else {
 		showMessage("Welcome, "+data.name);
@@ -35,10 +22,12 @@ function handleLoad(data) {
 	}
 }
 
-function showMessage(text, closeButton=false) {
-	$("#dialogText").text(text);
+function showMessage(text, closeButton=false, altBtn=false, altFunc=()=>{}) {
+	vm.modalText = text;
 	vm.modalCloseBtn = closeButton;
 	vm.modalOpen = true;
+	vm.modalAltBtn = altBtn;
+	vm.modalAltFunc = altFunc;
 }
 
 function post(url, data, callback, b64) {

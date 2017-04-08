@@ -46,6 +46,15 @@ h1,h2 {
 	margin-top: 1.5rem;
 }
 
+select {
+	border: 1px solid #BF5700;
+	color: #000;
+	margin: 10px 0;
+	padding: 8px;
+	box-sizing: border-box;
+	border-radius: 5px;
+}
+
 .checkboxes, .radios {
 	display: block;
 	width: 100%;
@@ -108,7 +117,7 @@ label {
 	margin-left: -300px;
 	width: 600px;
 	margin-top: -100px;
-	height: 200px;
+	min-height: 200px;
 	box-sizing: border-box;
 	font-size: 2rem;
 }
@@ -116,5 +125,11 @@ label {
 #dialogBtn {
 	position: absolute;
 	right: 1rem;
+	bottom: 1rem;
+}
+
+#altBtn {
+	position: absolute;
+	right: 5rem;
 	bottom: 1rem;
 }

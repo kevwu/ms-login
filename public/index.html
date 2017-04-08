@@ -42,14 +42,31 @@
 				<label><input name="pu" type="radio" v-model="form.purpose" value="research"> Research</label>
 			</div>
 		</div>
-		<button id="submitButton">Sign me in</button>
+		<button id="submitButton" v-on:click="function(){submit()}">Sign me in</button>
 		<h2 id="textDisplay"></h2>
 
 		<div v-if="modalOpen" id="modal">
 			<div id="dialog">
-				<span id="dialogText"></span><br>
+				<span v-if="!manualEntryOpen" id="dialogText">{{modalText}}<br></span>
+				
+				<div v-if="manualEntryOpen">
+					Fill out:<br>
+					<input type="text" placeholder="Name" v-model="form.name"><br>
+					<input type="text" placeholder="Major" v-model="form.major"><br>
+					<select v-model="form.classification" selected="freshman">
+						<option value="freshman">Freshman</option>
+						<option value="sophomore">Sophomore</option>
+						<option value="junior">Junior</option>
+						<option value="senior">Senior</option>
+						<option value="graduate">Graduate</option>
+					</select><br>
+					<input type="text" placeholder="Email" v-model="form.email">
+				</div>
+				
 				<button v-if="modalCloseBtn" v-on:click="modalOpen = false" id="dialogBtn">Close</button>
+				<button v-if="modalAltBtn" v-on:click="modalAltFunc()" id="altBtn">{{modalAltBtn}}</button>
 			</div>
+
 		</div>
 	</div>
 </body>
