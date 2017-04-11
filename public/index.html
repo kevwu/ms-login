@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Input</title>
+	<title>MAKERSPACE</title>
 	<script
 		src="https://code.jquery.com/jquery-3.2.1.min.js"
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -11,6 +11,7 @@
 	<script src="script.js" defer></script>
 	<link href="styles.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 	<div id="container">
@@ -22,24 +23,17 @@
 		<h2>Equipment:</h2>
 		<div class="row">
 			<div class="checkboxes">
-				<label><input type="checkbox" v-model="form.equipment" value="laserCutter"> Laser Cutter</label>
-				<label><input type="checkbox" v-model="form.equipment" value="3DPrinter"> 3D Printer</label>
-				<label><input type="checkbox" v-model="form.equipment" value="PCBMill"> PCB Mill</label>
-				<label><input type="checkbox" v-model="form.equipment" value="CNCMill"> CNC Mill</label>
-				<label><input type="checkbox" v-model="form.equipment" value="plasmaCutter"> Plasma Cutter</label>
-				<label><input type="checkbox" v-model="form.equipment" value="solderingIron"> Soldering Iron</label>
-				<label><input type="checkbox" v-model="form.equipment" value="sewingMachine"> Sewing Machine</label>
-				<label><input type="checkbox" v-model="form.equipment" value="tools"> Tools</label>
-				<label><input type="checkbox" v-model="form.equipment" value="other"> Other</label>
+				<label v-for="item in values.equipment">
+					<input type="checkbox" v-model="form.equipment" v-bind:value="item.value"> {{item.name}}
+				</label>
 			</div>
 		</div>
 		<h2>Purpose:</h2>
 		<div class="row">
 			<div class="radios">
-				<label><input name="pu" type="radio" v-model="form.purpose" value="fun"> Fun</label>
-				<label><input name="pu" type="radio" v-model="form.purpose" value="class"> Class</label>
-				<label><input name="pu" type="radio" v-model="form.purpose" value="training"> Training</label>
-				<label><input name="pu" type="radio" v-model="form.purpose" value="research"> Research</label>
+				<label v-for="item in values.purpose">
+					<input name="pu" type="radio" v-model="form.purpose" v-bind:value="item.value"> {{item.name}}
+				</label>
 			</div>
 		</div>
 		<button id="submitButton" v-on:click="function(){submit()}">Sign me in</button>
@@ -53,12 +47,8 @@
 					Fill out:<br>
 					<input type="text" placeholder="Name" v-model="form.name"><br>
 					<input type="text" placeholder="Major" v-model="form.major"><br>
-					<select v-model="form.classification" selected="freshman">
-						<option value="freshman">Freshman</option>
-						<option value="sophomore">Sophomore</option>
-						<option value="junior">Junior</option>
-						<option value="senior">Senior</option>
-						<option value="graduate">Graduate</option>
+					<select v-model="form.classification">
+						<option v-for="item in values.classification" v-bind:value="item">{{item}}</option>
 					</select><br>
 					<input type="text" placeholder="Email" v-model="form.email">
 				</div>
@@ -66,7 +56,6 @@
 				<button v-if="modalCloseBtn" v-on:click="modalOpen = false" id="dialogBtn">Close</button>
 				<button v-if="modalAltBtn" v-on:click="modalAltFunc()" id="altBtn">{{modalAltBtn}}</button>
 			</div>
-
 		</div>
 	</div>
 </body>

@@ -7,10 +7,34 @@ let formData = {
 		major: null,
 		classification: null
 };
+
+//ideally move this to a separate file in the future
+let values = {
+	"equipment": [
+		{"name": "Laser Cutter", "value": "laserCutter"},
+		{"name": "3D Printer", "value": "3DPrinter"},
+		{"name": "PCB Mill", "value": "PCBMill"},
+		{"name": "CNC Mill", "value": "CNCMill"},
+		{"name": "Plasma Cutter", "value": "plasmaCutter"},
+		{"name": "Soldering Iron", "value": "solderingIron"},
+		{"name": "Sewing Machine", "value": "sewingMachine"},
+		{"name": "Tools", "value": "tools"},
+		{"name": "Other", "value": "other"}
+	],
+	"purpose": [
+		{"name": "Fun", "value": "fun"},
+		{"name": "Class", "value": "class"},
+		{"name": "Training", "value": "training"},
+		{"name": "Research", "value": "research"}
+	],
+	"classification": ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"]
+};
+
 let vm = new Vue({
 	el: "#container",
 	data: {
 		form: formData,
+		values: values,
 		manualEntryOpen: false,
 		modalOpen: false,
 		modalText: null,
