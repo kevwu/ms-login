@@ -17,6 +17,9 @@ button {
 	border: none;
 	color: white;
 	padding: 8px;
+	transition: 0.2s ease-out;
+	border-radius: 2px;
+	outline: none;
 }
 
 input {
@@ -41,15 +44,12 @@ h1,h2 {
 	max-width: 100%;
 	background: white;
 	padding: 3rem 3rem 1.5rem;
-	box-shadow: 0px 8px 32px rgba(0,0,0,0.1);
 	border-radius: 2px;
 	margin-top: 1.5rem;
 }
 
 select {
-	border: 1px solid #BF5700;
 	color: #000;
-	margin: 10px 0;
 	padding: 8px;
 	box-sizing: border-box;
 	border-radius: 5px;
@@ -60,13 +60,25 @@ select {
 	width: 100%;
 }
 
+.checked {
+	background-color: rgba(191, 87, 0, 1.0) !important;
+	color: white;
+}
+
 label {
-	border: 1px solid #BF5700;
 	color: #000;
-	margin: 10px 0;
-	padding: 8px;
+	padding: 0.75rem 1rem;
 	box-sizing: border-box;
-	border-radius: 5px;
+	transition: 0.2s ease-out;
+	user-select: none;
+	cursor: pointer;
+}
+.checkboxes>label:not(:last-child) {
+	border-bottom: 1px solid rgba(191, 87, 0, 0.5);
+}
+
+.checkboxes>label:hover, .radios>label:hover {
+	background-color: rgba(191, 87, 0, 0.1);
 }
 
 .checkboxes>label {
@@ -78,11 +90,6 @@ label {
 	width: 20%;
 	text-align: center;
 	display: inline-block;
-}
-
-.checkboxes>label:hover, .radios>label:hover {
-	background-color: #BF5700;
-	color: #fff;
 }
 
 .row {
@@ -108,7 +115,6 @@ label {
 
 #dialog {
 	background: white;
-	box-shadow: 0px 4px 8px rgba(0,0,0,0.4);
 	text-align: center;
 	padding: 3rem;
 	position: fixed;
@@ -120,6 +126,7 @@ label {
 	min-height: 200px;
 	box-sizing: border-box;
 	font-size: 2rem;
+	border-radius: 2px;
 }
 
 #dialogBtn {
@@ -132,4 +139,32 @@ label {
 	position: absolute;
 	right: 5rem;
 	bottom: 1rem;
+}
+
+.z-depth-0 {
+  box-shadow: none !important;
+}
+
+.z-depth-1, button {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+.z-depth-1-half {
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+}
+
+.z-depth-2, button:hover {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+.z-depth-3, button:active {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3);
+}
+
+.z-depth-4, .modal {
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+}
+
+.z-depth-5, #dialog {
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
 }
