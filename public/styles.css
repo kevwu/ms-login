@@ -4,7 +4,6 @@ body {
 	font-family: "Open Sans";
 	color: #333F48;
 	margin: 0;
-	/*transform: skewX(3deg) rotate(-3deg); /*  <======  DELET THIS */
 }
 
 input, button {
@@ -29,6 +28,7 @@ input {
 }
 
 h1,h2 {
+	font-size: x-large;
 	margin-bottom: 0.25rem;
 	font-weight: bold;
 }

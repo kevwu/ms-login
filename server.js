@@ -6,7 +6,7 @@ const fs = require("fs");
 const request = require("request");
 const validate = require("validate.js");
 
-const PORT = 1763;
+const PORT = 8081;
 const FILENAME = "signin.csv";
 const USE_AUTH = true;
 const URL = "https://directory.utexas.edu/index.php?q={EID}&scope=all&submit=Search";
